@@ -14,13 +14,13 @@ AgileBits Inc.
 After this repository is public:
 
 ```bash
-npx skills add OWNER/1password-cookies
+npx skills add alreshi/1password-cookies
 ```
 
 Until then, clone it and copy the skill into your agent:
 
 ```bash
-git clone git@github.com:OWNER/1password-cookies.git
+git clone git@github.com:alreshi/1password-cookies.git
 # Cursor (personal, all projects)
 cp -R 1password-cookies ~/.cursor/skills/1password-cookies
 ```
@@ -76,7 +76,7 @@ The GitHub repo starts **private** so you can review it. When you are ready:
 2. GitHub → Settings → General → Danger zone → Change repository visibility → Public.
 3. Create a release: `gh release create v1.0.0 --generate-notes`.
 4. Add topics: `agent-skill`, `1password`, `cookies`, `cursor`, `claude-code`.
-5. Install once so [skills.sh](https://skills.sh) can pick it up: `npx skills add OWNER/1password-cookies`.
+5. Install once so [skills.sh](https://skills.sh) can pick it up: `npx skills add alreshi/1password-cookies`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to send changes.
 

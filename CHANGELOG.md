@@ -15,4 +15,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Browser injection rules (origin grouping, sameSite/hostOnly/Secure mapping).
 - MIT license, security policy, and contributor documents.
 
-[1.0.0]: https://github.com/OWNER/1password-cookies/releases/tag/v1.0.0
+[1.0.0]: https://github.com/alreshi/1password-cookies/releases/tag/v1.0.0
