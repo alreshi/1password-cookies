@@ -7,8 +7,7 @@ description: >-
   cookies to 1Password, logging a browser in from 1Password cookies, porting
   the cookie toolkit to a new site, or when the user mentions Get cookies.txt
   LOCALLY, Cookie-Editor, or EditThisCookie JSON with 1Password. Distinct from
-  1Password Environments
-  (.env mounts).
+  1Password Environments (.env mounts).
 license: MIT
 compatibility: >-
   Requires 1Password CLI (op) and Python 3 for cookie sync; Node.js and
@@ -109,7 +108,7 @@ Requires `op` and `python3`. Values go through a mode-`0600` temp template, then
 
 ```bash
 bash scripts/sync-cookies.sh \
-  --vault AISDK \
+  --vault YourVault \
   --title "example.com cookies" \
   --hostname "example.com, sso.example.com" \
   --url https://example.com \

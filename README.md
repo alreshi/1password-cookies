@@ -11,17 +11,14 @@ AgileBits Inc.
 
 ## Install
 
-After this repository is public:
-
 ```bash
 npx skills add alreshi/1password-cookies
 ```
 
-Until then, clone it and copy the skill into your agent:
+Or clone and copy it into a personal skill directory:
 
 ```bash
-git clone git@github.com:alreshi/1password-cookies.git
-# Cursor (personal, all projects)
+git clone https://github.com/alreshi/1password-cookies.git
 cp -R 1password-cookies ~/.cursor/skills/1password-cookies
 ```
 
@@ -69,17 +66,7 @@ items, and service-account tokens as production secrets.
 - Do not edit 1Password items titled `Service Account Auth Token: …`.
 - Report vulnerabilities privately — see [SECURITY.md](SECURITY.md).
 
-## Making this repository public
-
-The GitHub repo starts **private** so you can review it. When you are ready:
-
-1. Confirm no real cookies, tokens, vault ids, or emails landed in git (`git log -p`).
-2. GitHub → Settings → General → Danger zone → Change repository visibility → Public.
-3. Create a release: `gh release create v1.0.0 --generate-notes`.
-4. Add topics: `agent-skill`, `1password`, `cookies`, `cursor`, `claude-code`.
-5. Install once so [skills.sh](https://skills.sh) can pick it up: `npx skills add alreshi/1password-cookies`.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to send changes.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to send changes. Releases: [v1.0.0](https://github.com/alreshi/1password-cookies/releases/tag/v1.0.0).
 
 ## License
 
