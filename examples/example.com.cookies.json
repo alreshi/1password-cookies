@@ -1,0 +1,15 @@
+[
+  {
+    "name": "session",
+    "value": "example-not-a-real-secret",
+    "domain": ".example.com",
+    "path": "/",
+    "secure": true,
+    "httpOnly": true,
+    "sameSite": "lax",
+    "hostOnly": false,
+    "session": false,
+    "storeId": "0",
+    "expirationDate": 2000000000
+  }
+]

@@ -1,0 +1,68 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  skill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          set -euo pipefail
+          for path in SKILL.md LICENSE README.md SECURITY.md CODE_OF_CONDUCT.md CONTRIBUTING.md scripts/sync-cookies.sh scripts/fetch-session.js references/REFERENCE.md; do
+            test -e "$path" || { echo "missing $path"; exit 1; }
+          done
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path("SKILL.md").read_text(encoding="utf-8")
+          if not text.startswith("---\n"):
+              raise SystemExit("SKILL.md must start with YAML frontmatter")
+          end = text.find("\n---\n", 4)
+          if end == -1:
+              raise SystemExit("SKILL.md frontmatter is not closed")
+          fm = text[4:end]
+          required = ("name: 1password-cookies", "description:", "license: MIT")
+          for item in required:
+              if item not in fm:
+                  raise SystemExit(f"frontmatter missing {item!r}")
+          body_lines = text[end + 5 :].count("\n") + 1
+          if body_lines > 500:
+              raise SystemExit(f"SKILL.md body is {body_lines} lines (max 500)")
+          print("frontmatter ok")
+          PY
+
+      - name: Syntax-check scripts
+        run: |
+          bash -n scripts/sync-cookies.sh
+          node --check scripts/fetch-session.js
+          python3 -c "
+          import pathlib, re, tempfile, os, py_compile
+          text = pathlib.Path('scripts/sync-cookies.sh').read_text()
+          m = re.search(r\"python3 - <<'PY'\\n(.*)\\nPY\\n\", text, re.S)
+          if not m:
+              raise SystemExit('python heredoc not found')
+          path = tempfile.NamedTemporaryFile(suffix='.py', delete=False)
+          path.write(m.group(1).encode())
+          path.close()
+          py_compile.compile(path.name, doraise=True)
+          os.unlink(path.name)
+          print('python ok')
+          "
+
+      - name: Refuse real-looking cookie dumps
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$|\.pem$|\.key$'; then
+            echo "refusing to ship secret-looking files"
+            exit 1
+          fi

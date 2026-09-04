@@ -1,0 +1,33 @@
+{
+  "name": "1password-cookies",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agent skill: store browser session cookies in 1Password, fetch them with a service account, and inject them into Chrome or Playwright.",
+  "license": "MIT",
+  "author": "Mohammed Alreshi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OWNER/1password-cookies.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OWNER/1password-cookies/issues"
+  },
+  "homepage": "https://github.com/OWNER/1password-cookies#readme",
+  "keywords": [
+    "agent-skill",
+    "cursor",
+    "claude-code",
+    "1password",
+    "cookies",
+    "puppeteer",
+    "playwright"
+  ],
+  "files": [
+    "SKILL.md",
+    "scripts",
+    "references",
+    "examples",
+    "LICENSE",
+    "README.md"
+  ]
+}

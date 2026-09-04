@@ -1,0 +1,29 @@
+name: Bug report
+description: Something in the skill or scripts is wrong
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do **not** paste cookie values, tokens, `cookieHeader`, or 1Password field contents.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Expected vs actual. Use counts and item titles, not secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Commands with secrets redacted (`--dry-run` preferred).
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "macOS, op 2.x, Python 3.x, Node 22"
+    validations:
+      required: true
