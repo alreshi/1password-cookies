@@ -33,6 +33,7 @@ in the usual skill directories (`.cursor/skills/`, `.claude/skills/`,
 
 | Step | Needs |
 |------|--------|
+| Export cookies | Chrome extension [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc), **JSON** format |
 | Push JSON → 1Password | [1Password CLI](https://developer.1password.com/docs/cli) (`op`), Python 3, macOS or Linux |
 | Fetch at runtime | Node.js 18+, [`@1password/sdk`](https://www.npmjs.com/package/@1password/sdk), a service-account token |
 | Inject into a browser | `puppeteer-core` or Playwright and a real Chrome install |
@@ -41,7 +42,7 @@ This skill is **not** the [1Password Environments](https://developer.1password.c
 
 ## What the agent does
 
-1. Export cookies from Chrome (Cookie-Editor / EditThisCookie) as a JSON **array**.
+1. Export cookies from Chrome with **[Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)** as a JSON **array** (not Netscape `.txt`).
 2. Upsert **one** `API_CREDENTIAL` item. Each cookie is a concealed field whose value is the **full cookie object** (name, domain, path, expiry).
 3. Unattended apps read the item with `@1password/sdk`.
 4. Browser automation injects cookies **per origin** (`goto` the origin, then `setCookie`).

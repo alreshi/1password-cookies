@@ -5,8 +5,9 @@ description: >-
   field per cookie, full cookie object), fetch with the 1Password JS SDK and a
   service account, and inject into Chrome or Playwright. Use when syncing
   cookies to 1Password, logging a browser in from 1Password cookies, porting
-  the cookie toolkit to a new site, or when the user mentions EditThisCookie /
-  Cookie-Editor JSON with 1Password. Distinct from 1Password Environments
+  the cookie toolkit to a new site, or when the user mentions Get cookies.txt
+  LOCALLY, Cookie-Editor, or EditThisCookie JSON with 1Password. Distinct from
+  1Password Environments
   (.env mounts).
 license: MIT
 compatibility: >-
@@ -33,6 +34,7 @@ variables.
 
 **Push (JSON → 1Password)**
 
+- [ ] Cookies exported with **Get cookies.txt LOCALLY** as **JSON** (not Netscape `.txt`)
 - [ ] Cookie JSON files are gitignored
 - [ ] `op` is signed in and the vault exists
 - [ ] Item created or updated via `--template` (never secret values on argv)
@@ -61,7 +63,7 @@ variables.
 
 ## Architecture
 
-1. Human exports cookies from Chrome (Cookie-Editor or EditThisCookie) as a JSON **array** of cookie objects.
+1. Human exports cookies from Chrome with **Get cookies.txt LOCALLY** as a JSON **array** of cookie objects.
 2. CLI (`op item create|edit --template`) upserts **one** `API_CREDENTIAL` item. Each cookie is a **concealed** field whose value is the **entire cookie object JSON**.
 3. Unattended apps fetch with `@1password/sdk` and a service-account token.
 4. Browser automation injects cookies **per origin**, then optionally writes an access token into `localStorage` / `sessionStorage`.
@@ -75,7 +77,7 @@ Copy this list and fill it in before writing code:
 ```
 - [ ] Vault name
 - [ ] Item title (not a Service Account Auth Token item)
-- [ ] One JSON export path per origin (gitignored)
+- [ ] One JSON export path per origin from Get cookies.txt LOCALLY (gitignored)
 - [ ] Section id + label per JSON file
 - [ ] Origin URL map (cookie domain suffix → https://host/)
 - [ ] Service account token env name (default OP_SERVICE_ACCOUNT_TOKEN)
@@ -84,10 +86,22 @@ Copy this list and fill it in before writing code:
 
 Then:
 
-1. Gitignore the JSON export filenames.
+1. Export cookies with Get cookies.txt LOCALLY as JSON. Gitignore those filenames.
 2. Push with [scripts/sync-cookies.sh](scripts/sync-cookies.sh) (copy into the project or run from this skill directory).
 3. Copy [scripts/fetch-session.js](scripts/fetch-session.js) into the app; set `OP_VAULT_ID` / `OP_ITEM_ID` from `op item get --format json` (`id` fields). Prefer env over hardcoding.
 4. Implement inject using the mapping in [references/REFERENCE.md](references/REFERENCE.md). Prove login with URL / title / “has login form” — not by printing cookies.
+
+## Export cookies
+
+Use the Chrome extension **[Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)** ([source](https://github.com/kairi003/Get-cookies.txt-LOCALLY)). It reads cookies on-device and does not send them off the machine.
+
+1. Log into the site in Chrome (and the SSO host, if the session spans two origins).
+2. Open **Get cookies.txt LOCALLY** on that tab.
+3. Set **Export Format** to **JSON** — not Netscape (`.txt`) and not Header String.
+4. Click **Export** for the current site. Use **Export All Cookies** only when you must, then split the file by origin.
+5. Save the `.json` next to the toolkit (gitignored). That file is the input to `scripts/sync-cookies.sh --json`.
+
+Repeat on each origin you need a 1Password section for. Netscape `cookies.txt` is not a valid `--json` input.
 
 ## Push
 

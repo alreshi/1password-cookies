@@ -5,7 +5,7 @@ template rules, SDK fetch, and browser injection.
 
 ## Cookie JSON export
 
-Chrome extensions (Cookie-Editor, EditThisCookie) export an **array**:
+Export with **[Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)**. Set **Export Format** to **JSON** and save the download. The file is `JSON.stringify` of Chrome’s `chrome.cookies.Cookie[]` — an **array**:
 
 ```json
 [
@@ -23,11 +23,13 @@ Chrome extensions (Cookie-Editor, EditThisCookie) export an **array**:
 ]
 ```
 
-`expirationDate` is Unix seconds. `sameSite` may be `lax`, `strict`, `none`,
+`expirationDate` is Unix seconds. Chrome `sameSite` is often `lax`, `strict`,
 `no_restriction`, or `unspecified`. `hostOnly: true` means the domain has no
 leading dot.
 
-One file per origin is easier to section in 1Password. Do not commit these files.
+Netscape `.txt` and Header String exports from the same extension are **not**
+inputs to `sync-cookies.sh`. One JSON file per origin is easier to section in
+1Password. Do not commit these files.
 
 A fake export lives at [examples/example.com.cookies.json](../examples/example.com.cookies.json).
 
@@ -212,7 +214,7 @@ When login looks expired:
 1. If fresh cookie JSON exists on disk, run `sync-cookies.sh`.
 2. Fetch the item again via SDK.
 3. Re-inject and re-probe once.
-4. If still expired, tell the human to log in with Chrome, re-export JSON, and re-run sync. Do not scrape passwords into 1Password.
+4. If still expired, tell the human to log in with Chrome, re-export JSON with Get cookies.txt LOCALLY, and re-run sync. Do not scrape passwords into 1Password.
 
 A cooldown (for example 10 minutes) avoids hammering `op` on every tick.
 
@@ -233,7 +235,8 @@ before writing session JSON, chat messages, or console logs.
 | `OP_SERVICE_ACCOUNT_TOKEN is not set` | Export the token from the vault’s service-account item into `.env`. Do not read cookie JSON for this. |
 | SDK `items.get` 404 | Wrong `OP_VAULT_ID` / `OP_ITEM_ID`. Re-read ids from `op item get --format json`. |
 | Sync refuses to modify item | Title is a service-account token item. Use a different `--title`. |
-| `no cookies to store` | Export files are missing or values are empty. Re-export while logged in, or pass `--include-empty` only if you mean it. |
+| `no cookies to store` | Export files are missing or values are empty. Re-export while logged in with Get cookies.txt LOCALLY as JSON, or pass `--include-empty` only if you mean it. |
+| JSON parse / not an array | The file is Netscape `.txt` or Header String. Re-export with **Export Format: JSON**. |
 | Chrome `setCookie` throws | Expired cookie, `SameSite=None` without Secure, or domain mismatch. Skip that cookie; check `hostOnly`. |
 | Logged in on one host, bounced on SSO | Inject SSO origin cookies first; confirm the SSO JSON file was included in sync. |
 | Cookie JSON in git | Delete it, commit the removal, keep the filename in `.gitignore`. Vault is the source of truth. |
